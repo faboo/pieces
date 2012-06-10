@@ -1,3 +1,5 @@
+=== About ===
+
 Pieces is a vector image editor based on a concept of scenes and characters.
 Each scene consists of a background texture and a number of characters. Each
 character is made up of individual shapes. There are two kinds of shapes:
@@ -6,12 +8,17 @@ own texture and position in a character.
 
 Scenes, characters, and shapes may be saved to browser local storage.
 
-Planned features:
+=== Running ===
 
-Adjusting the offset and rotation of image textures.
+To run, open Editor.html in a modern web browser.
 
-Shape outline editor.
+=== Planned Features ===
 
-A server backend for server-side storage and local exports.
+* Adjusting the offset and rotation of image textures.
 
-Better print support.
+* Shape outline editor.
+
+* A server backend for server-side storage and local exports.
+
+* Better print support.
+
