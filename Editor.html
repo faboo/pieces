@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<head>
+<meta charset="utf-8">
+<link type="text/css" href="css/flick/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+<link rel="stylesheet" href="editor.css">
+<script src="jquery-1.7.1.min.js"></script>
+<script src="js/jquery-ui-1.8.16.custom.min.js"></script>
+<script src="knockout-2.0.0.js"></script>
+
+<script src="editor-init.js"></script>
+
+<script src="LocalStorage.js"></script>
+
+<script src="MultiFunction.js"></script>
+<script src="ImageObject.js"></script>
+<script src="Transform.js"></script>
+<script src="Texture.js"></script>
+<script src="MultipartContainer.js"></script>
+<script src="Multipart.js"></script>
+<script src="Scene.js"></script>
+<script src="Character.js"></script>
+<script src="Stroke.js"></script>
+<script src="Point.js"></script>
+<script src="Shape.js"></script>
+<script src="Ellipsoid.js"></script>
+
+<script src="Widget.js"></script>
+<script src="ContentWidget.js"></script>
+<script src="Dialog.js"></script>
+<script src="DialogButton.js"></script>
+<script src="MenuBar.js"></script>
+<script src="MenuItem.js"></script>
+<script src="SceneMenuBar.js"></script>
+<script src="SceneTools.js"></script>
+<script src="CharacterTools.js"></script>
+<script src="ShapeTools.js"></script>
+<script src="PartMenuBar.js"></script>
+<script src="CollapsibleContainer.js"></script>
+<script src="TextureEditor.js"></script>
+<script src="PartsEditor.js"></script>
+<script src="PointsEditor.js"></script>
+<script src="SaveDialog.js"></script>
+<script src="LoadDialog.js"></script>
+<script src="Editor.js"></script>
+<script src="SceneEditor.js"></script>
+<script src="CharacterEditor.js"></script>
+<script src="ShapeEditor.js"></script>
+<script src="Application.js"></script>
+
+<!-- Application -->
+<script type="text/html" id="application-template">
+<div>
+<div class="sceneEditor" id="editor" />
+</div>
+</script>
+
+<!-- Dialog -->
+<script type="text/html" id="dialog-template">
+<div class="dialog" data-bind="css: { dialogModal: modal }">
+<div data-bind="if: modal">
+<div class="dialogFog" />
+</div>
+<h2 class="dialogTitle" data-bind="text: title, css: { dialogModalTitle: modal }" />
+
+<div class="dialogContent" id="contentContainer" />
+
+<div class="dialogButtons" data-bind="template: { name: 'dialog-button-template', foreach: buttons }" />
+</div>
+</script>
+
+<!-- Dialog Button -->
+<script type="text/html" id="dialog-button-template">
+<input type="submit" data-bind="value: name, click: onClick, disable: isDisabled"></button>
+</script>
+
+<!-- Menu Bar -->
+<script type="text/html" id="menu-bar-template">
+<div class="menu" data-bind="template: { name: 'menu-item-template', foreach: menus() }"></div>
+</script>
+
+<!-- Menu Item -->
+<script type="text/html" id="menu-item-template">
+<button
+	class="menuButton"
+	data-bind="text: name, click: onClick(), css: { menuButtonRight: position() === 'right' }"></button>
+</script>
+
+<!-- Scene Tools -->
+<script type="text/html" id="scene-tools-template">
+<div>
+<input class="name" type="text" data-bind="value: parentWidget().scene().name"></h2>
+
+<div class="textureEditor" id="backgroundEditor" bind="texture: parentWidget.scene.background"></div>
+
+<h3>Selection:</h3>
+<label>X</label><input type="text" data-bind="value: parentWidget().selected().transform().x"></input>
+<label>Y</label><input type="text" data-bind="value: parentWidget().selected().transform().y"></input>
+<label>R</label><input type="text" data-bind="value: parentWidget().selected().transform().r"></input>
+
+<div class="partsEditor" id="partsEditor" bind="parts: parentWidget.scene.parts" />
+
+</div>
+</script>
+
+<!-- Scene Editor -->
+<script type="text/plain" id="scene-editor-template">
+<div class="innerEditor" data-bind="">
+<div class="sceneMenuBar" bind="editor: this" />
+
+<div class="canvas-container">
+<canvas class="display">
+</canvas>
+</div>
+
+<div class="sceneTools" id="sceneTools" />
+
+</div>
+</script>
+
+<!-- Character Tools -->
+<script type="text/html" id="character-tools-template">
+<div>
+<input class="name" type="text" data-bind="value: parentWidget().scene().name"></h2>
+
+<h3>Selection:</h3>
+<label>X</label><input type="text" data-bind="value: parentWidget().selected().transform().x"></input>
+<label>Y</label><input type="text" data-bind="value: parentWidget().selected().transform().y"></input>
+<label>R</label><input type="text" data-bind="value: parentWidget().selected().transform().r"></input>
+
+<div class="partsEditor" id="partsEditor" bind="parts: parentWidget.scene.parts" />
+
+</div>
+</script>
+
+<!-- Character Editor -->
+<script type="text/plain" id="character-editor-template">
+<div>
+<div class="partMenuBar" bind="editor: this" />
+
+<div class="canvas-container">
+<canvas class="display" height="300" width="300">
+</canvas>
+</div>
+
+<div class="characterTools" id="characterTools" />
+
+</div>
+</script>
+
+<!-- Shape Tools -->
+<script type="text/html" id="shape-tools-template">
+<div>
+<input class="name" type="text" data-bind="value: parentWidget().scene().name"></h2>
+
+<div class="textureEditor" id="textureEditor" bind="texture: parentWidget.scene.texture"></div>
+
+<div class="partsEditor" id="partsEditor" bind="parts: parentWidget.scene.parts" />
+
+</div>
+</script>
+
+<!-- Shape Editor -->
+<script type="text/plain" id="shape-editor-template">
+<div>
+<div class="partMenuBar" bind="editor: this" />
+
+<div class="canvas-container">
+<canvas class="display" height="300" width="300">
+</canvas>
+</div>
+
+<div class="shapeTools" id="sceneTools" />
+
+</div>
+</script>
+
+<!-- Collapsible Container -->
+<script type="text/plain" id="collapsible-container-template">
+<div class="collapsible">
+<input type="submit" class="collapseButton" data-bind="click: onClick, value: buttonDisplayLabel"></button>
+<div class="collapsible-container" id="contentContainer">
+
+</div>
+</form>
+</script>
+
+<!-- Parts Editor -->
+<script type="text/html" id="parts-editor-template">
+<form class="parts-editor" onsubmit="return false">
+<table data-bind="template: { name: 'part-editor-template', foreach: parts() }">
+</table>
+</form>
+</script>
+
+<!-- Part Editor -->
+<script type="text/html" id="part-editor-template">
+<tr class="part-editor" data-bind="css: { selected: selected() }">
+<td> <label class="part-name" data-bind="text: character().name"></label> </td>
+<td> <button class="close-button" data-bind="click: remove">x</button> </td>
+<td> <button class="up-button" data-bind="click: moveUp">▲</button> </td>
+<td> <button class="down-button" data-bind="click: moveDown">▼</button> </td>
+</tr>
+</script>
+
+<!-- Points Editor -->
+<script type="text/html" id="points-editor-template">
+<form class="points-editor" onsubmit="return false">
+<div data-bind="template: { name: 'point-editor-template', foreach: points() }">
+</form>
+</script>
+
+<!-- Point Editor -->
+<script type="text/html" id="point-editor-template">
+<div class="point-editor">
+<label>X</label><input type="text" data-bind="value: x"></input>
+<label>Y</label><input type="text" data-bind="value: y"></input>
+<button class="close-button" data-bind="click: remove">x</button>
+</div>
+</script>
+
+<!-- Texture Editor -->
+<script type="text/plain" id="texture-editor-template">
+<form class="texture-editor" onsubmit="return false">
+<div>
+<div class="label">File/URL</div>
+<div class="data">
+<input type="text" data-bind="value: texture().imageUrl"></input>
+</div>
+</div>
+
+<div>
+<div class="label">Color</div>
+<div class="data">
+<input type="text" data-bind="value: texture().pattern"></input>
+</div>
+</div>
+
+<div>
+<div class="label">Direction</div>
+<div class="data">
+<input type="text" id="value: texture().direction"></input>
+</div>
+</div>
+
+</form>
+</script>
+
+<!-- Save Dialog -->
+<script type="text/html" id="save-dialog-template">
+<div>
+
+<label>Name: </label>
+<input type="text" data-bind="value: name"></input>
+
+</div>
+</script>
+
+<!-- Load Dialog -->
+<script type="text/html" id="load-dialog-template">
+<div>
+
+<div> <label>Select: </label> </div>
+<select class="objectList" data-bind="options: available, value: name" size="10" multiple="false"></select>
+
+</div>
+</script>
+</head>
+
+<body>
+<div class="application"> </div>
+</body>
+
+<!-- sample -->
+<script type="application/json" id="sample">
+{
+	'name' : "this place",
+	'background' :  { 'pattern' : "#CCCCCC" },
+	'parts' : [{
+		'character' : {
+			'type' : "Character",
+			'name' : "shapes",
+			'center' : { x : 5, y : 5 },
+			'parts' : [{
+				'character' : {
+					'type' : "Polygon",
+					'name' : "green square",
+					'texture' : { 'pattern' : "#00FF00" },
+					'stroke' : {
+						'style' : "#FF0000",
+						'width' : 2
+					},
+					'center' : { x : 10.5, y : 10.5 },
+					'parts' : [
+						{ 'x' : 0.0, 'y' : 0.0 },
+						{ 'x' : 21.5, 'y' : 0.0 },
+						{ 'x' : 21.5, 'y' : 21.5 },
+						{ 'x' : 0.0, 'y' : 21.5 },
+						{ 'x' : 0.0, 'y' : 0.0 }
+					]},
+				'transform' : { 'x' : 30, 'y' : 30, 'r' : 0.5 }
+			}]},
+		'transform' : { 'x' : 10, 'y' : 5, 'r' : .0 }
+	}]
+}
+</script>
+<script type="text/javascript">
+$(window).load(function (){
+		application.editor.load($('script#sample')[0].text);
+	});
+</script>
+</html>
