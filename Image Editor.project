@@ -4,6 +4,19 @@
     <Name>Image Editor</Name>
     <Contents>
       <Folder>
+        <Name>Documentation</Name>
+        <Contents>
+          <File>
+            <Name>COPYING</Name>
+            <RealPath>COPYING</RealPath>
+          </File>
+          <File>
+            <Name>README</Name>
+            <RealPath>README</RealPath>
+          </File>
+        </Contents>
+      </Folder>
+      <Folder>
         <Name>HTML</Name>
         <Contents>
           <File>
@@ -89,6 +102,10 @@
                 <RealPath>CharacterEditor.js</RealPath>
               </File>
               <File>
+                <Name>CharacterTools.js</Name>
+                <RealPath>CharacterTools.js</RealPath>
+              </File>
+              <File>
                 <Name>CollapsibleContainer.js</Name>
                 <RealPath>CollapsibleContainer.js</RealPath>
               </File>
@@ -155,6 +172,10 @@
               <File>
                 <Name>ShapeEditor.js</Name>
                 <RealPath>ShapeEditor.js</RealPath>
+              </File>
+              <File>
+                <Name>ShapeTools.js</Name>
+                <RealPath>ShapeTools.js</RealPath>
               </File>
               <File>
                 <Name>TextureEditor.js</Name>
