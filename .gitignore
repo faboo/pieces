@@ -12,6 +12,8 @@ tmp/**/*
 *.tmp
 *.bak
 *.swp
+*.swo
+._tmp
 *~.nib
 local.properties
 .classpath
